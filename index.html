@@ -15,16 +15,22 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background: #faf0e1;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 10px;
+            padding: 0 10px 20px;
             position: relative;
             overflow-x: hidden;
+            padding-top: 90px;
         }
 
         /* Анимированные "мазки кистью" */
@@ -65,6 +71,104 @@
             }
         }
 
+        /* Фиксированная навигация */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 245, 230, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 4px solid #b08b5c;
+            box-shadow: 0 4px 20px rgba(100, 70, 40, 0.3);
+            padding: 10px 20px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #5e3a1c;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #fff5e6;
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 2px solid #b08b5c;
+            color: #5e3a1c;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #8b6a41;
+        }
+
+        .nav-link:active {
+            transform: translateY(4px);
+            box-shadow: 0 0px 0 #8b6a41;
+        }
+
+        .nav-link span {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 700px) {
+            .nav-container {
+                justify-content: center;
+            }
+            
+            .nav-links {
+                justify-content: center;
+            }
+            
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+            
+            body {
+                padding-top: 130px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-link {
+                font-size: 0.75rem;
+                padding: 5px 8px;
+            }
+            
+            .nav-link span {
+                font-size: 1rem;
+            }
+            
+            body {
+                padding-top: 150px;
+            }
+        }
+
         .card {
             position: relative;
             z-index: 10;
@@ -78,6 +182,8 @@
             padding: clamp(20px, 4vw, 40px);
             border: 2px solid rgba(150, 100, 50, 0.5);
             transition: all 0.3s;
+            margin-top: 0;
+            margin-bottom: 30px;
         }
 
         .card:hover {
@@ -87,7 +193,7 @@
 
         .header {
             display: flex;
-            flex-direction: column; /* Изменено на column, чтобы убрать ноутбук */
+            flex-direction: column;
             gap: 15px;
             margin-bottom: clamp(20px, 3vw, 30px);
             background: rgba(180, 140, 100, 0.2);
@@ -110,11 +216,9 @@
             letter-spacing: -0.5px;
             width: 100%;
             word-break: break-word;
-            /* Заставляем слова переноситься */
             word-spacing: 100vw;
         }
 
-        /* Убираем принудительный перенос через br */
         .title h1 br {
             display: none;
         }
@@ -630,11 +734,97 @@
         .dot:nth-child(3) { background: #8b6a41; }
         .dot:nth-child(4) { background: #7b5a35; }
         .dot:nth-child(5) { background: #5e3a1c; }
+
+        /* ID для якорей */
+        #about, #resources, #pricing, #reviews, #contacts {
+            scroll-margin-top: 100px;
+        }
+
+        /* Кнопка "Наверх" */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: #b08b5c;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            border: 4px solid #f5e1c4;
+            box-shadow: 0 8px 0 #6b4f2e;
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(0.8);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+            transform: scale(1);
+        }
+
+        .back-to-top:active {
+            transform: translateY(6px) scale(1);
+            box-shadow: 0 2px 0 #6b4f2e;
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.8rem;
+                border-width: 3px;
+                box-shadow: 0 6px 0 #6b4f2e;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Фиксированная навигация -->
+    <div class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                ✨ Английский с Людмилой
+            </div>
+            <div class="nav-links">
+                <a href="#about" class="nav-link">
+                    <span>❤️</span> Обо мне
+                </a>
+                <a href="#resources" class="nav-link">
+                    <span>📚</span> Ресурсы
+                </a>
+                <a href="#pricing" class="nav-link">
+                    <span>💰</span> Цены
+                </a>
+                <a href="#reviews" class="nav-link">
+                    <span>⭐</span> Отзывы
+                </a>
+                <a href="#contacts" class="nav-link">
+                    <span>📬</span> Контакты
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка "Наверх" -->
+    <div class="back-to-top" id="backToTop" title="Наверх">
+        ⬆️
+    </div>
+
     <div class="card">
-        <div class="header">
+        <!-- Шапка без иконки ноутбука -->
+        <div class="header" id="top">
             <div class="title">
                 <h1>Английский с Людмилой</h1>
                 <div class="description">
@@ -659,8 +849,10 @@
             </div>
         </div>
 
+        <!-- Основная сетка с якорями -->
         <div class="main-grid">
-            <div class="about">
+            <!-- Блок "Обо мне" с якорем -->
+            <div class="about" id="about">
                 <h2>
                     <span>❤️👩‍🏫</span> Преподаю с увлечением
                 </h2>
@@ -687,8 +879,8 @@
                 </div>
             </div>
 
-            <!-- Контактная форма -->
-            <div class="contact-form-section">
+            <!-- Контактная форма с якорем -->
+            <div class="contact-form-section" id="contacts">
                 <h2>📬 Контакты</h2>
                 
                 <div class="contact-details">
@@ -718,8 +910,8 @@
             </div>
         </div>
 
-        <!-- Блок ресурсов -->
-        <div class="resources-section">
+        <!-- Блок ресурсов с якорем -->
+        <div class="resources-section" id="resources">
             <h2><span>📚</span> Ресурсы, которые я использую на уроках</h2>
             <div class="resources-grid">
                 <div class="resource-item">
@@ -758,8 +950,8 @@
             </div>
         </div>
 
-        <!-- Блоки стоимости -->
-        <div class="pricing-section">
+        <!-- Блоки стоимости с якорем -->
+        <div class="pricing-section" id="pricing">
             <!-- Индивидуальные уроки -->
             <div class="pricing-card">
                 <div class="pricing-icon">🗣️</div>
@@ -817,8 +1009,8 @@
             </div>
         </div>
 
-        <!-- Блок с отзывами -->
-        <div class="reviews-section" id="reviewsSection">
+        <!-- Блок с отзывами с якорем -->
+        <div class="reviews-section" id="reviews">
             <h3>✨ Отзывы учеников</h3>
             <div class="review-item">
                 <p class="review-author">Анна, 28 лет</p>
@@ -844,16 +1036,16 @@
         ];
         let i = 0;
         document.body.addEventListener('click', function(e) {
-            if (!e.target.closest('.about li') && !e.target.closest('button') && !e.target.closest('input') && !e.target.closest('textarea') && !e.target.closest('.pricing-card') && !e.target.closest('.platforms-button')) {
+            if (!e.target.closest('.about li') && !e.target.closest('button') && !e.target.closest('input') && !e.target.closest('textarea') && !e.target.closest('.pricing-card') && !e.target.closest('.platforms-button') && !e.target.closest('.nav-link') && !e.target.closest('.back-to-top')) {
                 document.body.style.background = colors[i % colors.length];
                 i++;
             }
         });
 
+        // Обновленные обработчики для кнопок в блоке "Обо мне"
         const reviewsButton = document.querySelector('.about li:last-child');
-        const reviewsSection = document.getElementById('reviewsSection');
-        
         reviewsButton.addEventListener('click', function() {
+            const reviewsSection = document.getElementById('reviews');
             reviewsSection.classList.toggle('show');
             if (reviewsSection.classList.contains('show')) {
                 reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -862,19 +1054,19 @@
 
         const priceButton = document.querySelector('.about li:nth-child(3)');
         priceButton.addEventListener('click', function() {
-            document.querySelector('.pricing-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
 
         const individualButton = document.querySelector('.about li:first-child');
         individualButton.addEventListener('click', function() {
             alert('🗣️ Индивидуальные уроки - полностью под ваш запрос и уровень! Подробнее в блоке стоимости ниже.');
-            document.querySelector('.pricing-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
 
         const groupButton = document.querySelector('.about li:nth-child(2)');
         groupButton.addEventListener('click', function() {
             alert('👥 Групповые занятия - учимся в мини-группах до 5 человек! Подробнее в блоке стоимости ниже.');
-            document.querySelector('.pricing-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
 
         const contactForm = document.getElementById('contactForm');
@@ -897,6 +1089,46 @@
         const platformsButton = document.getElementById('platformsButton');
         platformsButton.addEventListener('click', function() {
             alert('🔗 Занятия проходят на платформах: Zoom, ProgressMe, Взнания. Людмила отправит ссылку после записи.');
+        });
+
+        // Плавная прокрутка для навигационных ссылок
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Если это блок отзывов, показываем его
+                    if (targetId === '#reviews') {
+                        targetElement.classList.add('show');
+                    }
+                    
+                    targetElement.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }
+            });
+        });
+
+        // Кнопка "Наверх" - появление при скролле
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // Клик по кнопке "Наверх"
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     </script>
 </body>
