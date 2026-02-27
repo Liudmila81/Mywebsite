@@ -713,6 +713,179 @@
             font-size: clamp(1rem, 3vw, 1.1rem);
         }
 
+        /* ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА (внизу) */
+        .slot-machine-section {
+            background: rgba(255, 245, 230, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 60px 20px 60px 20px;
+            padding: clamp(25px, 5vw, 40px);
+            margin: 30px 0 20px;
+            border: 6px solid #b08b5c;
+            box-shadow: 0 20px 0 #6b4f2e, 0 30px 40px rgba(100, 70, 40, 0.3);
+        }
+
+        .slot-machine-section h2 {
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            font-weight: 800;
+            color: #5e3a1c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .slot-machine-section h2 span {
+            font-size: clamp(2rem, 6vw, 2.8rem);
+        }
+
+        .slot-container {
+            display: flex;
+            gap: 30px;
+            align-items: stretch;
+            flex-wrap: wrap;
+        }
+
+        .slot-left {
+            flex: 2;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slot-right {
+            flex: 1;
+            min-width: 250px;
+            background: #fff5e6;
+            border-radius: 50px 20px 50px 20px;
+            padding: 25px 20px;
+            border: 4px solid #9c7a4d;
+            box-shadow: 0 10px 0 #6b4f2e, inset 0 2px 10px rgba(255,255,255,0.5);
+        }
+
+        .slot-right h3 {
+            font-size: 1.8rem;
+            color: #5e3a1c;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .prize-list {
+            list-style: none;
+        }
+
+        .prize-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: #ecdbbd;
+            border-radius: 40px;
+            border: 2px solid #b08b5c;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #5e3a1c;
+            box-shadow: 0 4px 0 #8b6a41;
+        }
+
+        .prize-list li span {
+            font-size: 2rem;
+        }
+
+        .slot-machine {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 3vw, 30px);
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .slot-reel {
+            background: #fffaf2;
+            border-radius: 30px;
+            padding: 20px 25px;
+            border: 5px solid #9c7a4d;
+            box-shadow: inset 0 -5px 0 #6b4f2e, 0 10px 0 #5e3a1c;
+            font-size: clamp(3rem, 10vw, 5rem);
+            min-width: 120px;
+            text-align: center;
+            transform: rotate(0deg);
+            transition: all 0.1s ease;
+            background: linear-gradient(145deg, #fff5e6, #ecdbbd);
+        }
+
+        .slot-reel.spinning {
+            animation: spinReel 0.2s infinite linear;
+        }
+
+        @keyframes spinReel {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(5deg) scale(1.1); }
+            50% { transform: rotate(-5deg) scale(1.1); }
+            75% { transform: rotate(5deg) scale(1.1); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .slot-prize {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: 700;
+            color: #5e3a1c;
+            background: #f5e1c4;
+            padding: 15px 30px;
+            border-radius: 60px;
+            border: 4px solid #b08b5c;
+            margin: 20px 0;
+            display: inline-block;
+            box-shadow: 0 8px 0 #8b6a41;
+        }
+
+        .slot-button {
+            background: #b08b5c;
+            border: none;
+            color: white;
+            font-weight: 800;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            padding: 18px 40px;
+            border-radius: 60px;
+            cursor: pointer;
+            border: 4px solid #f5e1c4;
+            box-shadow: 0 10px 0 #6b4f2e;
+            transition: 0.1s linear;
+            margin: 20px 0 10px;
+        }
+
+        .slot-button:active {
+            transform: translateY(8px);
+            box-shadow: 0 2px 0 #6b4f2e;
+        }
+
+        .slot-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: translateY(0);
+            box-shadow: 0 8px 0 #6b4f2e;
+        }
+
+        .slot-message {
+            font-size: clamp(1rem, 3.5vw, 1.3rem);
+            font-weight: 600;
+            color: #5e3a1c;
+            background: #ecdbbd;
+            padding: 12px 25px;
+            border-radius: 40px;
+            border: 3px dashed #b08b5c;
+            margin-top: 20px;
+        }
+
+        .prize-emoji {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
         .palette {
             display: flex;
             justify-content: center;
@@ -736,7 +909,7 @@
         .dot:nth-child(5) { background: #5e3a1c; }
 
         /* ID для якорей */
-        #about, #resources, #pricing, #reviews, #contacts {
+        #about, #resources, #pricing, #reviews, #contacts, #slot-machine {
             scroll-margin-top: 100px;
         }
 
@@ -787,6 +960,19 @@
                 border-width: 3px;
                 box-shadow: 0 6px 0 #6b4f2e;
             }
+            
+            .slot-reel {
+                min-width: 80px;
+                padding: 15px 20px;
+            }
+            
+            .slot-container {
+                flex-direction: column;
+            }
+            
+            .slot-right {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -812,6 +998,9 @@
                 </a>
                 <a href="#contacts" class="nav-link">
                     <span>📬</span> Контакты
+                </a>
+                <a href="#slot-machine" class="nav-link">
+                    <span>🎰</span> Слот
                 </a>
             </div>
         </div>
@@ -1025,6 +1214,49 @@
                 <p>"Подготовилась к IELTS на 7.5 благодаря индивидуальному подходу. Огромное спасибо!"</p>
             </div>
         </div>
+
+        <!-- ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА (в самом низу) -->
+        <div class="slot-machine-section" id="slot-machine">
+            <h2>
+                <span>🎰</span> Крути слот и выигрывай! <span>🎰</span>
+            </h2>
+            
+            <div class="slot-container">
+                <!-- Левая часть - слот-машина -->
+                <div class="slot-left">
+                    <div class="slot-machine">
+                        <div class="slot-reel" id="reel1">🎁</div>
+                        <div class="slot-reel" id="reel2">🎁</div>
+                        <div class="slot-reel" id="reel3">🎁</div>
+                    </div>
+
+                    <div class="slot-prize" id="prizeDisplay">
+                        🎉 Нажми на кнопку! 🎉
+                    </div>
+
+                    <button class="slot-button" id="spinButton">
+                        🎰 КРУТИТЬ 🎰
+                    </button>
+
+                    <div class="slot-message" id="slotMessage">
+                        Только один раз! Удача уже ждёт ✨
+                    </div>
+                </div>
+
+                <!-- Правая часть - список призов -->
+                <div class="slot-right">
+                    <h3>🎁 Возможные призы</h3>
+                    <ul class="prize-list">
+                        <li><span>💰</span> Скидка на первый месяц 10%</li>
+                        <li><span>🎓</span> Бесплатный урок</li>
+                        <li><span>📄</span> Полезная ПДФка</li>
+                        <li><span>🏷️</span> Скидка на курс 10%</li>
+                        <li><span>💬</span> Бесплатная консультация</li>
+                    </ul>
+                    <p style="text-align: center; margin-top: 15px; font-weight: 600; color: #5e3a1c;">✨ Любой приз — твой! ✨</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1044,37 +1276,48 @@
 
         // Обновленные обработчики для кнопок в блоке "Обо мне"
         const reviewsButton = document.querySelector('.about li:last-child');
-        reviewsButton.addEventListener('click', function() {
-            const reviewsSection = document.getElementById('reviews');
-            reviewsSection.classList.toggle('show');
-            if (reviewsSection.classList.contains('show')) {
-                reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        });
+        const reviewsSection = document.getElementById('reviews');
+        
+        if (reviewsButton) {
+            reviewsButton.addEventListener('click', function() {
+                reviewsSection.classList.toggle('show');
+                if (reviewsSection.classList.contains('show')) {
+                    reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            });
+        }
 
         const priceButton = document.querySelector('.about li:nth-child(3)');
-        priceButton.addEventListener('click', function() {
-            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+        if (priceButton) {
+            priceButton.addEventListener('click', function() {
+                document.getElementById('pricing').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        }
 
         const individualButton = document.querySelector('.about li:first-child');
-        individualButton.addEventListener('click', function() {
-            alert('🗣️ Индивидуальные уроки - полностью под ваш запрос и уровень! Подробнее в блоке стоимости ниже.');
-            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+        if (individualButton) {
+            individualButton.addEventListener('click', function() {
+                alert('🗣️ Индивидуальные уроки - полностью под ваш запрос и уровень! Подробнее в блоке стоимости ниже.');
+                document.getElementById('pricing').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        }
 
         const groupButton = document.querySelector('.about li:nth-child(2)');
-        groupButton.addEventListener('click', function() {
-            alert('👥 Групповые занятия - учимся в мини-группах до 5 человек! Подробнее в блоке стоимости ниже.');
-            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+        if (groupButton) {
+            groupButton.addEventListener('click', function() {
+                alert('👥 Групповые занятия - учимся в мини-группах до 5 человек! Подробнее в блоке стоимости ниже.');
+                document.getElementById('pricing').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        }
 
         const contactForm = document.getElementById('contactForm');
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('✨ Спасибо за запрос! Людмила свяжется с вами в ближайшее время.');
-            contactForm.reset();
-        });
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('✨ Спасибо за запрос! Людмила свяжется с вами в ближайшее время.');
+                contactForm.reset();
+            });
+        }
 
         // Интерактивность для карточек стоимости
         const pricingCards = document.querySelectorAll('.pricing-card');
@@ -1087,9 +1330,11 @@
 
         // Интерактивность для кнопки с платформами
         const platformsButton = document.getElementById('platformsButton');
-        platformsButton.addEventListener('click', function() {
-            alert('🔗 Занятия проходят на платформах: Zoom, ProgressMe, Взнания. Людмила отправит ссылку после записи.');
-        });
+        if (platformsButton) {
+            platformsButton.addEventListener('click', function() {
+                alert('🔗 Занятия проходят на платформах: Zoom, ProgressMe, Взнания. Людмила отправит ссылку после записи.');
+            });
+        }
 
         // Плавная прокрутка для навигационных ссылок
         document.querySelectorAll('.nav-link').forEach(link => {
@@ -1130,6 +1375,81 @@
                 behavior: 'smooth'
             });
         });
+
+        // ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА
+        const reel1 = document.getElementById('reel1');
+        const reel2 = document.getElementById('reel2');
+        const reel3 = document.getElementById('reel3');
+        const spinButton = document.getElementById('spinButton');
+        const prizeDisplay = document.getElementById('prizeDisplay');
+        const slotMessage = document.getElementById('slotMessage');
+
+        // Пять выигрышных вариантов с эмодзи
+        const prizes = [
+            { emoji: '💰', text: 'Скидка на первый месяц 10%' },
+            { emoji: '🎓', text: 'Бесплатный урок' },
+            { emoji: '📄', text: 'Полезная ПДФка' },
+            { emoji: '🏷️', text: 'Скидка на курс 10%' },
+            { emoji: '💬', text: 'Бесплатная консультация' }
+        ];
+
+        // Символы для слот-машины (соответствуют призам)
+        const symbols = ['💰', '🎓', '📄', '🏷️', '💬'];
+
+        let spinsLeft = 1; // Только один раз можно крутить
+
+        if (spinButton) {
+            spinButton.addEventListener('click', function() {
+                if (spinsLeft <= 0) {
+                    slotMessage.textContent = '🎰 Ты уже использовал свой шанс! Но удача всегда с тобой ✨';
+                    return;
+                }
+
+                // Блокируем кнопку
+                spinsLeft--;
+                
+                // Добавляем анимацию
+                reel1.classList.add('spinning');
+                reel2.classList.add('spinning');
+                reel3.classList.add('spinning');
+                
+                spinButton.disabled = true;
+                spinButton.textContent = '🎰 КРУТИТСЯ... 🎰';
+
+                // Эффект прокрутки символов
+                let spinCount = 0;
+                const spinInterval = setInterval(() => {
+                    reel1.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    reel2.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    reel3.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    spinCount++;
+                    
+                    if (spinCount > 10) { // 10 быстрых смен
+                        clearInterval(spinInterval);
+                        
+                        // Выбираем случайный приз (ВСЕГДА ВЫИГРЫШ)
+                        const randomPrize = Math.floor(Math.random() * prizes.length);
+                        const prize = prizes[randomPrize];
+                        
+                        // Устанавливаем одинаковые символы на всех барабанах (для красоты)
+                        reel1.textContent = prize.emoji;
+                        reel2.textContent = prize.emoji;
+                        reel3.textContent = prize.emoji;
+                        
+                        // Убираем анимацию
+                        reel1.classList.remove('spinning');
+                        reel2.classList.remove('spinning');
+                        reel3.classList.remove('spinning');
+                        
+                        // Показываем приз
+                        prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> ${prize.text}`;
+                        slotMessage.innerHTML = `🎉 ПОЗДРАВЛЯЕМ! Ты выиграл: ${prize.text} 🎉`;
+                        
+                        spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
+                    }
+                }, 100);
+            });
+        }
     </script>
 </body>
 </html>
