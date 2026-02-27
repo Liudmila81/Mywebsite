@@ -1740,90 +1740,128 @@
 
         // ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА
         const reel1 = document.getElementById('reel1');
-        const reel2 = document.getElementById('reel2');
-        const reel3 = document.getElementById('reel3');
-        const spinButton = document.getElementById('spinButton');
-        const prizeDisplay = document.getElementById('prizeDisplay');
-        const slotMessage = document.getElementById('slotMessage');
-        const prizeInput = document.getElementById('prizeInput');
+const reel2 = document.getElementById('reel2');
+const reel3 = document.getElementById('reel3');
+const spinButton = document.getElementById('spinButton');
+const prizeDisplay = document.getElementById('prizeDisplay');
+const slotMessage = document.getElementById('slotMessage');
+const prizeInput = document.getElementById('prizeInput');
 
-        const prizes = [
-            { emoji: '💰', text: 'Скидка на первый месяц 10%' },
-            { emoji: '🎓', text: 'Бесплатный урок' },
-            { emoji: '📄', text: 'Полезная ПДФка' },
-            { emoji: '🏷️', text: 'Скидка на курс 10%' },
-            { emoji: '💬', text: 'Бесплатная консультация' }
-        ];
-        const symbols = ['💰', '🎓', '📄', '🏷️', '💬'];
-        let spinsLeft = 1;
+const prizes = [
+    { emoji: '💰', text: 'Скидка на первый месяц 10%' },
+    { emoji: '🎓', text: 'Бесплатный урок' },
+    { emoji: '📄', text: 'Полезная ПДФка' },
+    { emoji: '🏷️', text: 'Скидка на курс 10%' },
+    { emoji: '💬', text: 'Бесплатная консультация' }
+];
+const symbols = ['💰', '🎓', '📄', '🏷️', '💬'];
+let spinsLeft = 1;
+let isSpinning = false;
 
-        if (spinButton) {
-            spinButton.addEventListener('click', function() {
-                if (spinsLeft <= 0) {
-                    slotMessage.textContent = '🎰 Ты уже использовал свой шанс! Но удача всегда с тобой ✨';
-                    return;
-                }
-                spinsLeft--;
-                reel1.classList.add('spinning');
-                reel2.classList.add('spinning');
-                reel3.classList.add('spinning');
-                spinButton.disabled = true;
-                spinButton.textContent = '🎰 КРУТИТСЯ... 🎰';
-
-                let spinCount = 0;
-                const spinInterval = setInterval(() => {
+if (spinButton) {
+    spinButton.addEventListener('click', function(e) {
+        e.preventDefault(); // Предотвращаем возможные проблемы с касаниями
+        
+        if (spinsLeft <= 0) {
+            slotMessage.textContent = '🎰 Ты уже использовал свой шанс! Но удача всегда с тобой ✨';
+            return;
+        }
+        
+        if (isSpinning) return; // Предотвращаем множественные нажатия
+        
+        isSpinning = true;
+        spinsLeft--;
+        
+        // Убираем класс spinning перед началом новой анимации
+        reel1.classList.remove('spinning');
+        reel2.classList.remove('spinning');
+        reel3.classList.remove('spinning');
+        
+        // Используем requestAnimationFrame для оптимизации анимации
+        requestAnimationFrame(() => {
+            reel1.classList.add('spinning');
+            reel2.classList.add('spinning');
+            reel3.classList.add('spinning');
+        });
+        
+        spinButton.disabled = true;
+        spinButton.textContent = '🎰 КРУТИТСЯ... 🎰';
+        
+        // Уменьшаем количество итераций для мобильных
+        const spinIterations = window.innerWidth <= 768 ? 8 : 12;
+        let spinCount = 0;
+        
+        // Используем более производительный setInterval с оптимизированной частотой
+        const spinInterval = setInterval(() => {
+            // Используем requestAnimationFrame для обновления DOM
+            requestAnimationFrame(() => {
+                if (spinCount < spinIterations) {
                     reel1.textContent = symbols[Math.floor(Math.random() * symbols.length)];
                     reel2.textContent = symbols[Math.floor(Math.random() * symbols.length)];
                     reel3.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                    spinCount++;
-                    
-                    if (spinCount > 10) {
-                        clearInterval(spinInterval);
-                        const randomPrize = Math.floor(Math.random() * prizes.length);
-                        const prize = prizes[randomPrize];
-                        
-                        reel1.textContent = prize.emoji;
-                        reel2.textContent = prize.emoji;
-                        reel3.textContent = prize.emoji;
-                        
-                        reel1.classList.remove('spinning');
-                        reel2.classList.remove('spinning');
-                        reel3.classList.remove('spinning');
-                        
-                        prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> <span class="prize-text">${prize.text}</span>`;
-                        slotMessage.innerHTML = `🎉 ПОЗДРАВЛЯЕМ! Ты выиграл: ${prize.text} 🎉<br><br>📸 Сделайте скриншот и прикрепите его в форме обратной связи ниже!`;
-                        
-                        spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
-                        
-                        if (prizeInput) {
-                            prizeInput.value = prize.text;
-                        }
-                    }
-                }, 100);
-            });
-        }
-
-        const feedbackForm = document.getElementById('feedbackForm');
-        if (feedbackForm) {
-            feedbackForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const fileInput = document.getElementById('screenshot');
-                if (fileInput.files.length > 0) {
-                    const file = fileInput.files[0];
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert('❌ Файл слишком большой! Максимальный размер: 5 МБ');
-                        return;
-                    }
-                    alert('✨ Спасибо! Ваш скриншот получен. Мы свяжемся с вами в течение 24 часов для подтверждения выигрыша!');
-                    feedbackForm.reset();
-                    if (prizeInput) {
-                        prizeInput.value = 'Определится после игры в слот';
-                    }
-                } else {
-                    alert('❌ Пожалуйста, прикрепите скриншот вашего выигрыша');
                 }
             });
+            
+            spinCount++;
+            
+            if (spinCount >= spinIterations) {
+                clearInterval(spinInterval);
+                
+                const randomPrize = Math.floor(Math.random() * prizes.length);
+                const prize = prizes[randomPrize];
+                
+                // Обновляем все в одном requestAnimationFrame
+                requestAnimationFrame(() => {
+                    reel1.textContent = prize.emoji;
+                    reel2.textContent = prize.emoji;
+                    reel3.textContent = prize.emoji;
+                    
+                    reel1.classList.remove('spinning');
+                    reel2.classList.remove('spinning');
+                    reel3.classList.remove('spinning');
+                    
+                    prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> <span class="prize-text">${prize.text}</span>`;
+                    slotMessage.innerHTML = `🎉 ПОЗДРАВЛЯЕМ! Ты выиграл: ${prize.text} 🎉\n\n📸 Сделайте скриншот и прикрепите его в форме обратной связи ниже!`;
+                    
+                    spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
+                    
+                    if (prizeInput) {
+                        prizeInput.value = prize.text;
+                    }
+                    
+                    isSpinning = false;
+                });
+            }
+        }, 60); // Увеличиваем интервал до 60ms для мобильных (было 100ms)
+    });
+    
+    // Обработка touch-событий для мобильных
+    spinButton.addEventListener('touchstart', function(e) {
+        e.preventDefault(); // Предотвращаем масштабирование при двойном тапе
+    }, { passive: false });
+}
+
+const feedbackForm = document.getElementById('feedbackForm');
+if (feedbackForm) {
+    feedbackForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fileInput = document.getElementById('screenshot');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            if (file.size > 5 * 1024 * 1024) {
+                alert('❌ Файл слишком большой! Максимальный размер: 5 МБ');
+                return;
+            }
+            alert('✨ Спасибо! Ваш скриншот получен. Мы свяжемся с вами в течение 24 часов для подтверждения выигрыша!');
+            feedbackForm.reset();
+            if (prizeInput) {
+                prizeInput.value = 'Определится после игры в слот';
+            }
+        } else {
+            alert('❌ Пожалуйста, прикрепите скриншот вашего выигрыша');
         }
+    });
+}
     </script>
 </body>
 </html>
