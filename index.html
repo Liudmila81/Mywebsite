@@ -1738,71 +1738,169 @@
             });
         });
 
-        // ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА
-        const reel1 = document.getElementById('reel1');
-        const reel2 = document.getElementById('reel2');
-        const reel3 = document.getElementById('reel3');
-        const spinButton = document.getElementById('spinButton');
-        const prizeDisplay = document.getElementById('prizeDisplay');
-        const slotMessage = document.getElementById('slotMessage');
-        const prizeInput = document.getElementById('prizeInput');
+        // ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА (полностью переработанная версия)
+const reel1 = document.getElementById('reel1');
+const reel2 = document.getElementById('reel2');
+const reel3 = document.getElementById('reel3');
+const spinButton = document.getElementById('spinButton');
+const prizeDisplay = document.getElementById('prizeDisplay');
+const slotMessage = document.getElementById('slotMessage');
+const prizeInput = document.getElementById('prizeInput');
 
-        const prizes = [
-            { emoji: '💰', text: 'Скидка на первый месяц 10%' },
-            { emoji: '🎓', text: 'Бесплатный урок' },
-            { emoji: '📄', text: 'Полезная ПДФка' },
-            { emoji: '🏷️', text: 'Скидка на курс 10%' },
-            { emoji: '💬', text: 'Бесплатная консультация' }
-        ];
-        const symbols = ['💰', '🎓', '📄', '🏷️', '💬'];
-        let spinsLeft = 1;
+const prizes = [
+    { emoji: '💰', text: 'Скидка на первый месяц 10%' },
+    { emoji: '🎓', text: 'Бесплатный урок' },
+    { emoji: '📄', text: 'Полезная ПДФка' },
+    { emoji: '🏷️', text: 'Скидка на курс 10%' },
+    { emoji: '💬', text: 'Бесплатная консультация' }
+];
 
-        if (spinButton) {
-            spinButton.addEventListener('click', function() {
-                if (spinsLeft <= 0) {
-                    slotMessage.textContent = '🎰 Ты уже использовал свой шанс! Но удача всегда с тобой ✨';
-                    return;
-                }
-                spinsLeft--;
-                reel1.classList.add('spinning');
-                reel2.classList.add('spinning');
-                reel3.classList.add('spinning');
-                spinButton.disabled = true;
-                spinButton.textContent = '🎰 КРУТИТСЯ... 🎰';
+// Символы для барабанов
+const symbols = ['💰', '🎓', '📄', '🏷️', '💬'];
 
-                let spinCount = 0;
-                const spinInterval = setInterval(() => {
-                    reel1.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                    reel2.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                    reel3.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                    spinCount++;
-                    
-                    if (spinCount > 10) {
-                        clearInterval(spinInterval);
-                        const randomPrize = Math.floor(Math.random() * prizes.length);
-                        const prize = prizes[randomPrize];
-                        
-                        reel1.textContent = prize.emoji;
-                        reel2.textContent = prize.emoji;
-                        reel3.textContent = prize.emoji;
-                        
-                        reel1.classList.remove('spinning');
-                        reel2.classList.remove('spinning');
-                        reel3.classList.remove('spinning');
-                        
-                        prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> <span class="prize-text">${prize.text}</span>`;
-                        slotMessage.innerHTML = `🎉 ПОЗДРАВЛЯЕМ! Ты выиграл: ${prize.text} 🎉<br><br>📸 Сделайте скриншот и прикрепите его в форме обратной связи ниже!`;
-                        
-                        spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
-                        
-                        if (prizeInput) {
-                            prizeInput.value = prize.text;
-                        }
-                    }
-                }, 100);
-            });
+let spinsLeft = 1;
+let isSpinning = false; // Флаг для предотвращения множественных запусков
+
+// Функция для получения случайного символа
+function getRandomSymbol() {
+    return symbols[Math.floor(Math.random() * symbols.length)];
+}
+
+// Функция для остановки анимации
+function stopSpinAnimation() {
+    reel1.classList.remove('spinning');
+    reel2.classList.remove('spinning');
+    reel3.classList.remove('spinning');
+}
+
+// Функция для запуска анимации
+function startSpinAnimation() {
+    reel1.classList.add('spinning');
+    reel2.classList.add('spinning');
+    reel3.classList.add('spinning');
+}
+
+if (spinButton) {
+    spinButton.addEventListener('click', function() {
+        // Предотвращаем множественные нажатия
+        if (isSpinning) return;
+        
+        // Проверяем остались ли попытки
+        if (spinsLeft <= 0) {
+            slotMessage.textContent = '🎰 Ты уже использовал свой шанс! Но удача всегда с тобой ✨';
+            return;
         }
+        
+        // Блокируем кнопку и запускаем анимацию
+        isSpinning = true;
+        spinsLeft--;
+        spinButton.disabled = true;
+        spinButton.textContent = '🎰 КРУТИТСЯ... 🎰';
+        
+        // Быстро меняем символы для эффекта прокрутки
+        let spinCount = 0;
+        const maxSpins = 12; // Количество "тиков" до остановки
+        
+        // Запускаем анимацию вращения
+        startSpinAnimation();
+        
+        // Интервал для смены символов
+        const spinInterval = setInterval(() => {
+            // Меняем символы на всех барабанах
+            reel1.textContent = getRandomSymbol();
+            reel2.textContent = getRandomSymbol();
+            reel3.textContent = getRandomSymbol();
+            
+            spinCount++;
+            
+            // Замедление перед остановкой
+            if (spinCount >= maxSpins - 3) {
+                // Начинаем замедлять анимацию
+                reel1.style.animationDuration = '0.3s';
+                reel2.style.animationDuration = '0.3s';
+                reel3.style.animationDuration = '0.3s';
+            }
+            
+            // Останавливаем прокрутку
+            if (spinCount >= maxSpins) {
+                clearInterval(spinInterval);
+                
+                // Выбираем случайный приз
+                const randomPrize = Math.floor(Math.random() * prizes.length);
+                const prize = prizes[randomPrize];
+                
+                // Устанавливаем финальные значения
+                reel1.textContent = prize.emoji;
+                reel2.textContent = prize.emoji;
+                reel3.textContent = prize.emoji;
+                
+                // Сбрасываем анимацию
+                stopSpinAnimation();
+                reel1.style.animationDuration = '';
+                reel2.style.animationDuration = '';
+                reel3.style.animationDuration = '';
+                
+                // Обновляем отображение приза
+                prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> <span class="prize-text">${prize.text}</span>`;
+                slotMessage.innerHTML = `🎉 ПОЗДРАВЛЯЕМ! Ты выиграл: ${prize.text} 🎉<br><br>📸 Сделайте скриншот и прикрепите его в форме обратной связи ниже!`;
+                
+                // Обновляем кнопку
+                spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
+                
+                // Обновляем поле ввода в форме обратной связи
+                if (prizeInput) {
+                    prizeInput.value = prize.text;
+                }
+                
+                // Разблокируем флаг
+                isSpinning = false;
+            }
+        }, 180); // Увеличенный интервал для мобильных устройств
+        
+    }, { passive: true }); // Добавляем passive: true для улучшения производительности на мобильных
+}
 
+// Обработка формы обратной связи
+const feedbackForm = document.getElementById('feedbackForm');
+if (feedbackForm) {
+    feedbackForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fileInput = document.getElementById('screenshot');
+        
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            
+            // Проверка размера файла
+            if (file.size > 5 * 1024 * 1024) {
+                alert('❌ Файл слишком большой! Максимальный размер: 5 МБ');
+                return;
+            }
+            
+            // Проверка типа файла
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('❌ Неподдерживаемый формат файла. Используйте JPG, PNG или GIF');
+                return;
+            }
+            
+            alert('✨ Спасибо! Ваш скриншот получен. Мы свяжемся с вами в течение 24 часов для подтверждения выигрыша!');
+            feedbackForm.reset();
+            
+            if (prizeInput) {
+                prizeInput.value = 'Определится после игры в слот';
+            }
+        } else {
+            alert('❌ Пожалуйста, прикрепите скриншот вашего выигрыша');
+        }
+    });
+}
+
+// Добавляем обработчик touch-событий для мобильных устройств
+if ('ontouchstart' in window) {
+    spinButton.addEventListener('touchstart', function(e) {
+        e.preventDefault(); // Предотвращаем двойные срабатывания
+    }, { passive: false });
+}
         const feedbackForm = document.getElementById('feedbackForm');
         if (feedbackForm) {
             feedbackForm.addEventListener('submit', function(e) {
