@@ -9,6 +9,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+	 /* Улучшение кликабельности на мобильных */
+        @media (max-width: 768px) {
+            .slot-button {
+                min-height: 60px;
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+                user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            .slot-reel {
+                transition: none;
+            }
+            
+            .slot-button:hover {
+                transform: none;
+            }
+        }
         * {
             margin: 0;
             padding: 0;
@@ -1755,92 +1773,90 @@ const prizes = [
     { emoji: '💬', text: 'Бесплатная консультация' }
 ];
 const symbols = ['💰', '🎓', '📄', '🏷️', '💬'];
-let spinsLeft = 1;
-let isSpinning = false;
+
+// Используем localStorage для сохранения состояния между перезагрузками
+let spinsLeft = localStorage.getItem('spinUsed') ? 0 : 1;
 
 if (spinButton) {
-    spinButton.addEventListener('click', function(e) {
-        e.preventDefault(); // Предотвращаем возможные проблемы с касаниями
+    // Проверяем, не использован ли уже шанс
+    if (spinsLeft === 0) {
+        spinButton.disabled = true;
+        spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
+        slotMessage.textContent = '🎰 Ты уже использовал свой шанс! Но удача всегда с тобой ✨';
+    }
+    
+    // Функция для прокрутки слотов
+    const spin = function(e) {
+        // Отменяем стандартное поведение для touch-событий
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         
         if (spinsLeft <= 0) {
             slotMessage.textContent = '🎰 Ты уже использовал свой шанс! Но удача всегда с тобой ✨';
-            return;
+            return false;
         }
         
-        if (isSpinning) return; // Предотвращаем множественные нажатия
-        
-        isSpinning = true;
-        spinsLeft--;
-        
-        // Убираем класс spinning перед началом новой анимации
-        reel1.classList.remove('spinning');
-        reel2.classList.remove('spinning');
-        reel3.classList.remove('spinning');
-        
-        // Используем requestAnimationFrame для оптимизации анимации
-        requestAnimationFrame(() => {
-            reel1.classList.add('spinning');
-            reel2.classList.add('spinning');
-            reel3.classList.add('spinning');
-        });
-        
+        // Блокируем кнопку сразу
+        spinsLeft = 0;
+        localStorage.setItem('spinUsed', 'true');
         spinButton.disabled = true;
         spinButton.textContent = '🎰 КРУТИТСЯ... 🎰';
         
-        // Уменьшаем количество итераций для мобильных
-        const spinIterations = window.innerWidth <= 768 ? 8 : 12;
+        // Простая анимация - просто меняем символы 5 раз с задержкой
         let spinCount = 0;
+        const maxSpins = 5; // Уменьшаем количество вращений для мобильных
         
-        // Используем более производительный setInterval с оптимизированной частотой
-        const spinInterval = setInterval(() => {
-            // Используем requestAnimationFrame для обновления DOM
-            requestAnimationFrame(() => {
-                if (spinCount < spinIterations) {
-                    reel1.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                    reel2.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                    reel3.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                }
-            });
-            
-            spinCount++;
-            
-            if (spinCount >= spinIterations) {
-                clearInterval(spinInterval);
-                
+        // Сначала показываем случайные символы без анимации
+        const spinStep = function() {
+            if (spinCount < maxSpins) {
+                reel1.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                reel2.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                reel3.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                spinCount++;
+                setTimeout(spinStep, 80); // Уменьшаем задержку для быстроты
+            } else {
+                // Завершаем анимацию - выбираем приз
                 const randomPrize = Math.floor(Math.random() * prizes.length);
                 const prize = prizes[randomPrize];
                 
-                // Обновляем все в одном requestAnimationFrame
-                requestAnimationFrame(() => {
-                    reel1.textContent = prize.emoji;
-                    reel2.textContent = prize.emoji;
-                    reel3.textContent = prize.emoji;
-                    
-                    reel1.classList.remove('spinning');
-                    reel2.classList.remove('spinning');
-                    reel3.classList.remove('spinning');
-                    
-                    prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> <span class="prize-text">${prize.text}</span>`;
-                    slotMessage.innerHTML = `🎉 ПОЗДРАВЛЯЕМ! Ты выиграл: ${prize.text} 🎉\n\n📸 Сделайте скриншот и прикрепите его в форме обратной связи ниже!`;
-                    
-                    spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
-                    
-                    if (prizeInput) {
-                        prizeInput.value = prize.text;
-                    }
-                    
-                    isSpinning = false;
-                });
+                reel1.textContent = prize.emoji;
+                reel2.textContent = prize.emoji;
+                reel3.textContent = prize.emoji;
+                
+                prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> <span class="prize-text">${prize.text}</span>`;
+                slotMessage.innerHTML = '🎉 ПОЗДРАВЛЯЕМ! Сделайте скриншот и прикрепите его в форме обратной связи ниже!';
+                
+                spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
+                
+                if (prizeInput) {
+                    prizeInput.value = prize.text;
+                }
             }
-        }, 60); // Увеличиваем интервал до 60ms для мобильных (было 100ms)
-    });
+        };
+        
+        // Запускаем анимацию
+        spinStep();
+        
+        return false;
+    };
     
-    // Обработка touch-событий для мобильных
-    spinButton.addEventListener('touchstart', function(e) {
-        e.preventDefault(); // Предотвращаем масштабирование при двойном тапе
+    // Вешаем обработчики на разные события для надежности
+    spinButton.addEventListener('click', spin);
+    spinButton.addEventListener('touchstart', spin, { passive: false });
+    spinButton.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
     }, { passive: false });
+    
+    // Убираем возможные конфликты с другими обработчиками
+    spinButton.onclick = spin;
+    spinButton.ontouchstart = spin;
 }
 
+// Упрощенная обработка формы обратной связи
 const feedbackForm = document.getElementById('feedbackForm');
 if (feedbackForm) {
     feedbackForm.addEventListener('submit', function(e) {
