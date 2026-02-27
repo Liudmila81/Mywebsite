@@ -1147,6 +1147,93 @@
                 font-size: 1.8rem;
             }
         }
+
+        /* Стили для модального окна "Обо мне" */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff5e6;
+            border-radius: 50px 20px 50px 20px;
+            border: 6px solid #b08b5c;
+            box-shadow: 0 30px 40px rgba(100, 70, 40, 0.5), 0 0 0 10px rgba(150, 100, 50, 0.3);
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            color: #5e3a1c;
+        }
+
+        .modal-content h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 4px solid #b08b5c;
+            padding-bottom: 10px;
+        }
+
+        .modal-content h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 25px 0 10px;
+            color: #7b4f2b;
+        }
+
+        .modal-content p, .modal-content li {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .modal-content ul {
+            list-style-type: disc;
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: #8b6a41;
+            transition: 0.2s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #5e3a1c;
+            transform: scale(1.1);
+        }
+
+        .modal-content .highlight {
+            background: #ecdbbd;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -1157,8 +1244,8 @@
                 ✨ Английский с Людмилой
             </div>
             <div class="nav-links">
-                <a href="#about" class="nav-link">
-                    <span>❤️</span> Обо мне
+                <a href="#" class="nav-link" id="showAboutModalBtn">
+                    <span>👩‍🏫</span> Обо мне
                 </a>
                 <a href="#resources" class="nav-link">
                     <span>📚</span> Ресурсы
@@ -1185,6 +1272,41 @@
     <!-- Кнопка "Наверх" -->
     <div class="back-to-top" id="backToTop" title="Наверх">
         ⬆️
+    </div>
+
+    <!-- Модальное окно с подробной информацией "Обо мне" -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeAboutModal">&times;</span>
+            <h2><span>👩‍🏫</span> Подробно обо мне</h2>
+            
+            <h3>🎓 Образование</h3>
+            <p><span class="highlight">1998 - 2003</span> — высшее, Московский государственный открытый педагогический университет им. М. А. Шолохова<br>Специальность: филология, квалификация: учитель английского и французского языков</p>
+            
+            <h3>🏫 Опыт работы</h3>
+            <p><strong>Место работы:</strong> МОУ "Средняя общеобразовательная школа № 1", г. Электросталь, Московская область<br><strong>Должность:</strong> учитель английского языка<br><strong>1 категория</strong> присвоена 15 октября 2014 года.<br><strong>Стаж работы:</strong> в данном учреждении с сентября 2012 г по сентябрь 2015 года<br>С октября 2015 года преподаю онлайн.</p>
+            
+            <h3>📚 Курсы повышения квалификации</h3>
+            <ul>
+                <li>2013 г. - Педагогический университет "Первое сентября", дистанционный курс "Специфика обучения английскому языку в начальной школе" — 72 часа. Удостоверение рег.номер 262-025-695/ED-01-006.</li>
+                <li>2013 г. Педагогический университет "Первое сентября" — модульные курсы: "Тайм-менеджмент, или Как эффективно организовать своё время" (6 ч., Свид. рег.номер 262-025-695/EM-01-001); "Взрослые и дети, или Как преодолеть трудности в общении" (6 ч., Свид. рег.номер 262-025-695/EM-01-009).</li>
+                <li>2013 г. МГОГИ, курс "Использование электронных образовательных ресурсов в профессиональной деятельности учителя" — 72 часа. Удостоверение рег.номер 8874.</li>
+                <li>2013 г. - ГОУ ВПО "Академия социального управления", "Проектирование рабочей программы по предмету в условиях введения ФГОС ООО" — 72 часа. Удостоверение рег. номер 12015-13.</li>
+                <li>2014 г. - ГОУ ВПО "Академия социального управления", "Внеурочная деятельность в условиях перехода на ФГОС ООО" — 36 часов. Удостоверение ожидается.</li>
+                <li>24 марта – 4 апреля 2014 года — Дистанционный практико-ориентированный семинар «Развитие информационно-образовательной среды, отвечающей требованиям ФГОС» (суммарно более 30 часов, включая мастер-классы и вебинары). Тема самообразования: "Специфика обучения английскому языку в начальной школе".</li>
+            </ul>
+            
+            <h3>📺 Участие в вебинарах издательства «Просвещение» (2013-2014)</h3>
+            <p>Принимала участие в более чем 25 вебинарах по темам: организация проектной деятельности, выбор УМК, подготовка к ЕГЭ (все разделы), обучение чтению, использование здоровьесберегающих технологий, блог учителя и др. (общий объем более 50 часов).</p>
+            
+            <h3>📝 Публикации</h3>
+            <ul>
+                <li>Презентация к уроку учебника «Английский в фокусе», модуль 10. Сайт издательства «Просвещение» - <a href="http://www.prosv.ru/umk/spotlight/info.aspx?ob_no=42650" target="_blank">ссылка</a></li>
+                <li>Разработка урока с презентацией Модуль 10b по учебнику «Английский в фокусе для 5 класса», 2014 г. - <a href="http://nsportal.ru/lyudmila-osotova" target="_blank">nsportal.ru/lyudmila-osotova</a></li>
+                <li>Разработка Интеллектуальной лингвистической игры «Теперь я знаю» (“Now I know”), 2014 г. - <a href="http://school1-el.ru/category/metod_razrabotki" target="_blank">school1-el.ru</a></li>
+            </ul>
+            <p style="margin-top: 20px;">✨ Полный список вебинаров и сертификатов доступен по запросу.</p>
+        </div>
     </div>
 
     <div class="card">
@@ -1481,6 +1603,27 @@
     </div>
 
     <script>
+        // Модальное окно "Обо мне"
+        const aboutModal = document.getElementById('aboutModal');
+        const showAboutModalBtn = document.getElementById('showAboutModalBtn');
+        const closeAboutModal = document.getElementById('closeAboutModal');
+
+        showAboutModalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            aboutModal.classList.add('show');
+        });
+
+        closeAboutModal.addEventListener('click', function() {
+            aboutModal.classList.remove('show');
+        });
+
+        window.addEventListener('click', function(e) {
+            if (e.target === aboutModal) {
+                aboutModal.classList.remove('show');
+            }
+        });
+
+        // Фоновый клик для смены цвета
         const colors = [
             '#faf0e1',
             '#f5e6d3',
@@ -1489,7 +1632,7 @@
         ];
         let i = 0;
         document.body.addEventListener('click', function(e) {
-            if (!e.target.closest('.about li') && !e.target.closest('button') && !e.target.closest('input') && !e.target.closest('textarea') && !e.target.closest('.pricing-card') && !e.target.closest('.platforms-button') && !e.target.closest('.nav-link') && !e.target.closest('.back-to-top')) {
+            if (!e.target.closest('.about li') && !e.target.closest('button') && !e.target.closest('input') && !e.target.closest('textarea') && !e.target.closest('.pricing-card') && !e.target.closest('.platforms-button') && !e.target.closest('.nav-link') && !e.target.closest('.back-to-top') && !e.target.closest('.modal') && !e.target.closest('.modal-content')) {
                 document.body.style.background = colors[i % colors.length];
                 i++;
             }
@@ -1557,23 +1700,22 @@
             });
         }
 
-        // Плавная прокрутка для навигационных ссылок
-        document.querySelectorAll('.nav-link').forEach(link => {
+        // Плавная прокрутка для навигационных ссылок (кроме модальной кнопки)
+        document.querySelectorAll('.nav-link:not(#showAboutModalBtn)').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    // Если это блок отзывов, показываем его
-                    if (targetId === '#reviews') {
-                        targetElement.classList.add('show');
+                if (targetId && targetId !== '#') {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        if (targetId === '#reviews') {
+                            targetElement.classList.add('show');
+                        }
+                        targetElement.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
                     }
-                    
-                    targetElement.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'start' 
-                    });
                 }
             });
         });
@@ -1589,7 +1731,6 @@
             }
         });
 
-        // Клик по кнопке "Наверх"
         backToTop.addEventListener('click', function() {
             window.scrollTo({
                 top: 0,
@@ -1606,7 +1747,6 @@
         const slotMessage = document.getElementById('slotMessage');
         const prizeInput = document.getElementById('prizeInput');
 
-        // Пять выигрышных вариантов с эмодзи
         const prizes = [
             { emoji: '💰', text: 'Скидка на первый месяц 10%' },
             { emoji: '🎓', text: 'Бесплатный урок' },
@@ -1614,11 +1754,8 @@
             { emoji: '🏷️', text: 'Скидка на курс 10%' },
             { emoji: '💬', text: 'Бесплатная консультация' }
         ];
-
-        // Символы для слот-машины (соответствуют призам)
         const symbols = ['💰', '🎓', '📄', '🏷️', '💬'];
-
-        let spinsLeft = 1; // Только один раз можно крутить
+        let spinsLeft = 1;
 
         if (spinButton) {
             spinButton.addEventListener('click', function() {
@@ -1626,19 +1763,13 @@
                     slotMessage.textContent = '🎰 Ты уже использовал свой шанс! Но удача всегда с тобой ✨';
                     return;
                 }
-
-                // Блокируем кнопку
                 spinsLeft--;
-                
-                // Добавляем анимацию
                 reel1.classList.add('spinning');
                 reel2.classList.add('spinning');
                 reel3.classList.add('spinning');
-                
                 spinButton.disabled = true;
                 spinButton.textContent = '🎰 КРУТИТСЯ... 🎰';
 
-                // Эффект прокрутки символов
                 let spinCount = 0;
                 const spinInterval = setInterval(() => {
                     reel1.textContent = symbols[Math.floor(Math.random() * symbols.length)];
@@ -1646,30 +1777,24 @@
                     reel3.textContent = symbols[Math.floor(Math.random() * symbols.length)];
                     spinCount++;
                     
-                    if (spinCount > 10) { // 10 быстрых смен
+                    if (spinCount > 10) {
                         clearInterval(spinInterval);
-                        
-                        // Выбираем случайный приз (ВСЕГДА ВЫИГРЫШ)
                         const randomPrize = Math.floor(Math.random() * prizes.length);
                         const prize = prizes[randomPrize];
                         
-                        // Устанавливаем одинаковые символы на всех барабанах (для красоты)
                         reel1.textContent = prize.emoji;
                         reel2.textContent = prize.emoji;
                         reel3.textContent = prize.emoji;
                         
-                        // Убираем анимацию
                         reel1.classList.remove('spinning');
                         reel2.classList.remove('spinning');
                         reel3.classList.remove('spinning');
                         
-                        // Показываем приз с фразой про скриншот
                         prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> <span class="prize-text">${prize.text}</span>`;
                         slotMessage.innerHTML = `🎉 ПОЗДРАВЛЯЕМ! Ты выиграл: ${prize.text} 🎉<br><br>📸 Сделайте скриншот и прикрепите его в форме обратной связи ниже!`;
                         
                         spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
                         
-                        // Обновляем поле с выигрышем в форме обратной связи
                         if (prizeInput) {
                             prizeInput.value = prize.text;
                         }
@@ -1678,27 +1803,19 @@
             });
         }
 
-        // Обработка формы обратной связи
         const feedbackForm = document.getElementById('feedbackForm');
         if (feedbackForm) {
             feedbackForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
-                // Здесь можно добавить логику для отправки файла на сервер
-                // В данном примере просто показываем сообщение
-                
                 const fileInput = document.getElementById('screenshot');
                 if (fileInput.files.length > 0) {
                     const file = fileInput.files[0];
-                    if (file.size > 5 * 1024 * 1024) { // 5 МБ
+                    if (file.size > 5 * 1024 * 1024) {
                         alert('❌ Файл слишком большой! Максимальный размер: 5 МБ');
                         return;
                     }
-                    
                     alert('✨ Спасибо! Ваш скриншот получен. Мы свяжемся с вами в течение 24 часов для подтверждения выигрыша!');
                     feedbackForm.reset();
-                    
-                    // Возвращаем поле с выигрышем в исходное состояние
                     if (prizeInput) {
                         prizeInput.value = 'Определится после игры в слот';
                     }
