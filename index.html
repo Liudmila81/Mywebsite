@@ -399,7 +399,8 @@
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group input[type="file"] {
             width: 100%;
             padding: clamp(12px, 3vw, 15px);
             border-radius: 30px;
@@ -409,6 +410,24 @@
             background: #fffaf2;
             color: #5e3a1c;
             transition: 0.2s;
+        }
+
+        .form-group input[type="file"] {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .form-group input[type="file"]::file-selector-button {
+            background: #b08b5c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            margin-right: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid #f5e1c4;
         }
 
         .form-group input:focus,
@@ -713,7 +732,7 @@
             font-size: clamp(1rem, 3vw, 1.1rem);
         }
 
-        /* ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА (внизу) */
+        /* ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА */
         .slot-machine-section {
             background: rgba(255, 245, 230, 0.8);
             backdrop-filter: blur(10px);
@@ -836,11 +855,11 @@
         }
 
         .slot-prize {
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            font-weight: 700;
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            font-weight: 600;
             color: #5e3a1c;
             background: #f5e1c4;
-            padding: 15px 30px;
+            padding: 12px 20px;
             border-radius: 60px;
             border: 4px solid #b08b5c;
             margin: 20px 0;
@@ -849,6 +868,18 @@
             width: 100%;
             text-align: center;
             word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .prize-emoji {
+            font-size: 1.8rem;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .prize-text {
+            display: inline-block;
+            vertical-align: middle;
         }
 
         .slot-button {
@@ -882,21 +913,70 @@
         }
 
         .slot-message {
-            font-size: clamp(1rem, 3.5vw, 1.3rem);
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
             font-weight: 600;
             color: #5e3a1c;
             background: #ecdbbd;
-            padding: 12px 25px;
+            padding: 12px 20px;
             border-radius: 40px;
             border: 3px dashed #b08b5c;
             margin-top: 20px;
             text-align: center;
             width: 100%;
+            line-height: 1.4;
         }
 
-        .prize-emoji {
-            font-size: 2rem;
-            margin-right: 10px;
+        /* Блок обратной связи */
+        .feedback-section {
+            background: linear-gradient(145deg, #fff5e6, #f5e1c4);
+            border-radius: 60px 20px 60px 20px;
+            padding: clamp(25px, 5vw, 40px);
+            margin: 30px 0 20px;
+            border: 6px solid #b08b5c;
+            box-shadow: 0 20px 0 #6b4f2e, 0 30px 40px rgba(100, 70, 40, 0.3);
+            position: relative;
+            z-index: 20;
+        }
+
+        .feedback-section h2 {
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            font-weight: 800;
+            color: #5e3a1c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+
+        .feedback-section h2 span {
+            font-size: clamp(2rem, 6vw, 2.8rem);
+        }
+
+        .feedback-description {
+            text-align: center;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            color: #5e3a1c;
+            margin-bottom: 25px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 15px;
+            border-radius: 40px;
+            border: 2px dashed #b08b5c;
+        }
+
+        .feedback-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .file-info {
+            font-size: 0.85rem;
+            color: #7b5a35;
+            margin-top: 5px;
+            margin-left: 10px;
         }
 
         .palette {
@@ -922,7 +1002,7 @@
         .dot:nth-child(5) { background: #5e3a1c; }
 
         /* ID для якорей */
-        #about, #resources, #pricing, #reviews, #contacts, #slot-machine {
+        #about, #resources, #pricing, #reviews, #contacts, #slot-machine, #feedback {
             scroll-margin-top: 100px;
         }
 
@@ -1007,7 +1087,12 @@
             }
             
             .slot-prize {
-                padding: 12px 20px;
+                padding: 12px 15px;
+                font-size: 0.95rem;
+            }
+            
+            .prize-emoji {
+                font-size: 1.5rem;
             }
         }
 
@@ -1043,6 +1128,24 @@
             .slot-machine-section h2 span {
                 font-size: 1.8rem;
             }
+            
+            .slot-prize {
+                font-size: 0.9rem;
+                padding: 10px 12px;
+            }
+            
+            .slot-message {
+                font-size: 0.85rem;
+                padding: 10px 12px;
+            }
+            
+            .feedback-section h2 {
+                font-size: 1.3rem;
+            }
+            
+            .feedback-section h2 span {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -1071,6 +1174,9 @@
                 </a>
                 <a href="#slot-machine" class="nav-link">
                     <span>🎰</span> Слот
+                </a>
+                <a href="#feedback" class="nav-link">
+                    <span>💬</span> Обратная связь
                 </a>
             </div>
         </div>
@@ -1285,7 +1391,7 @@
             </div>
         </div>
 
-        <!-- ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА (в самом низу) -->
+        <!-- ГЕЙМИФИКАЦИЯ - СЛОТ-МАШИНА -->
         <div class="slot-machine-section" id="slot-machine">
             <h2>
                 <span>🎰</span> Крути слот и выигрывай! <span>🎰</span>
@@ -1325,6 +1431,51 @@
                     </ul>
                     <p style="text-align: center; margin-top: 15px; font-weight: 600; color: #5e3a1c;">✨ Любой приз — твой! ✨</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Блок обратной связи с возможностью прикрепить файл -->
+        <div class="feedback-section" id="feedback">
+            <h2>
+                <span>💬</span> Обратная связь <span>📎</span>
+            </h2>
+            
+            <div class="feedback-description">
+                Выиграли приз? Отправьте скриншот и получите свой подарок! 🎁
+            </div>
+
+            <form class="feedback-form" id="feedbackForm">
+                <div class="form-group">
+                    <label>Ваше имя <span style="color: #b08b5c;">*</span></label>
+                    <input type="text" placeholder="Введите ваше имя" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email <span style="color: #b08b5c;">*</span></label>
+                    <input type="email" placeholder="Введите ваш email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Ваш выигрыш</label>
+                    <input type="text" id="prizeInput" placeholder="Например: Скидка 10% на первый месяц" readonly value="Определится после игры в слот">
+                </div>
+                
+                <div class="form-group">
+                    <label>Прикрепить скриншот <span style="color: #b08b5c;">*</span></label>
+                    <input type="file" id="screenshot" accept="image/*" required>
+                    <div class="file-info">Поддерживаются форматы: JPG, PNG, GIF. Максимальный размер: 5 МБ</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Комментарий (необязательно)</label>
+                    <textarea placeholder="Напишите, если есть дополнительные вопросы..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">📨 Отправить скриншот и получить приз</button>
+            </form>
+            
+            <div class="trial-note" style="margin-top: 20px;">
+                ⭐ Мы свяжемся с вами в течение 24 часов для подтверждения выигрыша!
             </div>
         </div>
     </div>
@@ -1453,6 +1604,7 @@
         const spinButton = document.getElementById('spinButton');
         const prizeDisplay = document.getElementById('prizeDisplay');
         const slotMessage = document.getElementById('slotMessage');
+        const prizeInput = document.getElementById('prizeInput');
 
         // Пять выигрышных вариантов с эмодзи
         const prizes = [
@@ -1511,13 +1663,48 @@
                         reel2.classList.remove('spinning');
                         reel3.classList.remove('spinning');
                         
-                        // Показываем приз
-                        prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> ${prize.text}`;
-                        slotMessage.innerHTML = `🎉 ПОЗДРАВЛЯЕМ! Ты выиграл: ${prize.text} 🎉`;
+                        // Показываем приз с фразой про скриншот
+                        prizeDisplay.innerHTML = `<span class="prize-emoji">${prize.emoji}</span> <span class="prize-text">${prize.text}</span>`;
+                        slotMessage.innerHTML = `🎉 ПОЗДРАВЛЯЕМ! Ты выиграл: ${prize.text} 🎉<br><br>📸 Сделайте скриншот и прикрепите его в форме обратной связи ниже!`;
                         
                         spinButton.textContent = '🎰 ШАНС ИСПОЛЬЗОВАН 🎰';
+                        
+                        // Обновляем поле с выигрышем в форме обратной связи
+                        if (prizeInput) {
+                            prizeInput.value = prize.text;
+                        }
                     }
                 }, 100);
+            });
+        }
+
+        // Обработка формы обратной связи
+        const feedbackForm = document.getElementById('feedbackForm');
+        if (feedbackForm) {
+            feedbackForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Здесь можно добавить логику для отправки файла на сервер
+                // В данном примере просто показываем сообщение
+                
+                const fileInput = document.getElementById('screenshot');
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    if (file.size > 5 * 1024 * 1024) { // 5 МБ
+                        alert('❌ Файл слишком большой! Максимальный размер: 5 МБ');
+                        return;
+                    }
+                    
+                    alert('✨ Спасибо! Ваш скриншот получен. Мы свяжемся с вами в течение 24 часов для подтверждения выигрыша!');
+                    feedbackForm.reset();
+                    
+                    // Возвращаем поле с выигрышем в исходное состояние
+                    if (prizeInput) {
+                        prizeInput.value = 'Определится после игры в слот';
+                    }
+                } else {
+                    alert('❌ Пожалуйста, прикрепите скриншот вашего выигрыша');
+                }
             });
         }
     </script>
